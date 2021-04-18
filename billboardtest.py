@@ -20,10 +20,12 @@ for i in range(len(playlists['tracks']['items'])):
 print(songs)
 print(artists)
 print(dates)
-
+newdate = list()
+bill = {}
 for i in range(len(songs)):
-    chart = billboard.ChartData('hot-100',date=dates[i]+'-01',fetch=True,timeout=25)
-
+    if(dates[i] not in bill.keys()):
+        bill[dates[i]] = billboard.ChartData('hot-100',date=dates[i]+'-01',fetch=True,timeout=25)
+print(bill)
 #print(playlists['tracks']['items'][1]['added_at'][:10])
 
 #def main():
