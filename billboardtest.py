@@ -2,11 +2,27 @@ import billboard
 import spotipy
 import os
 from spotipy.oauth2 import SpotifyOAuth
+from flask import Flask, session, request, redirect, render_template
+from flask_session import Session
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(64)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_FILE_DIR'] = './.flask_session/'
+Session(app)
+
 scope = "user-library-read"
 os.environ['SPOTIPY_CLIENT_ID'] = '4ee59bcc14e443ce91bbfa177eb50c23' #Secrets found in the secrets.py folder
 os.environ['SPOTIPY_CLIENT_SECRET'] = '34f6fefa1b6f4acc8ea11ee89c4df6d3'
 os.environ['SPOTIPY_REDIRECT_URI'] = 'http://127.0.0.1:8080/login'
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+caches_folder = './.spotify_caches/' #Cache path for clearing session
+if not os.path.exists(caches_folder):
+    os.makedirs(caches_folder)
+
+def session_cache_path():
+    return caches_folder + session.get('uuid') #Gets path
 
 #playlists = sp.user_playlists('spotify')
 playlists = sp.playlist(playlist_id='4Hbq8z7KWYVJtQQDVmN0Kf?si=HHr40zMuS7WTyJu6HoQ-fw', fields=None)
@@ -32,8 +48,6 @@ for i in range(len(songs)):
 billsongs = list()
 billartist = list()
 count = 0
-count2 = 0
-count3 = 0
 for i in range(len(songs)):
     for j in range(100):
         billsongs.append(bill[dates[i]][j].title.lower())
@@ -43,19 +57,13 @@ for i in range(len(songs)):
     #if songs[i].lower() == billsongs[i].lower() and artists[i].lower() == billartist[i].lower():
         #count += 1
 for i in range(len(songs)):
-    if songs[i].lower() in billsongs and artists[i].lower() in billartist:
-        print(songs[i])
-        print(artists[i])
+    if (songs[i].lower() in billsongs):
+        print(songs[i] + ' ' + artists[i] + ' ')
+        print(billsongs[i] + ' ' + billartist[i] + ' ')
         count += 1
-    if songs[i].lower() in billsongs:
-        count2 += 1
-    if artists[i].lower() in billartist:
-        count3 += 1
 print(songs)
 print(billsongs)
 print(count)
-print(count2)
-print(count3)
 print(len(songs))
 #total = len(songs)
 #print(total)
