@@ -42,10 +42,10 @@ def optionselect2():
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_path=session_cache_path()) #gets token for OAuth
     if not auth_manager.get_cached_token():
         return redirect('/') #if no token, redirect back home
-    return render_template('options.html') 
+    return render_template('options.html')
 
 @app.route('/results)')
-def optionselect2():
+def results():
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_path=session_cache_path()) #gets token for OAuth
     if not auth_manager.get_cached_token():
         return redirect('/') #if no token, redirect back home
@@ -112,10 +112,11 @@ def main(inputplaylist):
             count += 1
 #    print(songs)
 #    print(billsongs)
-#    print(count)
-#    print(len(songs))
-#    print(int(count/len(songs)))
-    return int(count/len(songs))
+    print(count)
+    print(len(songs))
+    per = round((count/len(songs)* 100))
+    print(per)
+    print('You are ' + str(per) + '% basic')
     # total = len(songs)
     # print(total)
     # print(count/total)
