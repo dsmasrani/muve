@@ -24,8 +24,11 @@ if not os.path.exists(caches_folder):
 def session_cache_path():
     return caches_folder + session.get('uuid') #Gets path
 
+
 #playlists = sp.user_playlists('spotify')
-playlists = sp.playlist(playlist_id='4Hbq8z7KWYVJtQQDVmN0Kf?si=HHr40zMuS7WTyJu6HoQ-fw', fields=None)
+input_str = 'https://open.spotify.com/playlist/4Hbq8z7KWYVJtQQDVmN0Kf?si=Kc8W3iUvROG-YZOx2xpb-w'
+idx = input_str.index('st/')
+playlists = sp.playlist(playlist_id=input_str[idx + 3:], fields=None)
 songs = list()
 artists = list()
 dates = list()
